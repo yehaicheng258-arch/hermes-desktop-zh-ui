@@ -1,9 +1,11 @@
-# Hermes 桌面端中文界面 — one-line installer (Windows PowerShell)
+# Hermes Desktop Chinese UI - one-line installer (Windows PowerShell)
 #
 #   irm https://raw.githubusercontent.com/yehaicheng258-arch/hermes-desktop-zh-ui/main/install.ps1 | iex
 #
 # Copies dist/plugin.js into <HERMES_HOME>\desktop-plugins\zh-ui\plugin.js.
 # The app watches that folder and hot-loads the plugin within a few seconds.
+# NOTE: keep this file pure ASCII - Windows PowerShell 5.1 reads .ps1 as ANSI
+# unless it has a BOM, and non-ASCII characters would come out mojibake.
 param([string]$Ref = 'main')
 
 $ErrorActionPreference = 'Stop'
@@ -24,5 +26,5 @@ Invoke-WebRequest -Uri $url -OutFile $dest -UseBasicParsing
 
 $size = (Get-Item $dest).Length
 Write-Host ("installed -> {0} ({1:N0} bytes)" -f $dest, $size)
-Write-Host 'Switch to the Hermes window: a "中" chip appears in the status bar (a few seconds).'
+Write-Host 'A "zh" chip appears in the Hermes status bar within a few seconds (click it to toggle).'
 Write-Host 'If you use a named profile, the folder is <HERMES_HOME>\profiles\<name>\desktop-plugins\zh-ui\ instead.'
