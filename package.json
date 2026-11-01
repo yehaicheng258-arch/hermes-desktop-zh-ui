@@ -1,0 +1,19 @@
+{
+  "name": "hermes-desktop-zh-ui",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simplified-Chinese UI for the Hermes desktop app: a runtime plugin that translates English skill/plugin/toolset/connector copy in place.",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/test_engine.mjs && node tests/test_register.mjs",
+    "test:engine": "node tests/test_engine.mjs",
+    "test:register": "node tests/test_register.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,14 @@
+# 依赖 / deps
+node_modules/
+__pycache__/
+*.pyc
+
+# 生成物 / generated
+feeds/
+.cache/
+tests/.runtime/
+/plugin.js
+
+# 系统 / os
+.DS_Store
+Thumbs.db
