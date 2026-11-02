@@ -10,6 +10,8 @@
 English: a runtime plugin for the Hermes desktop app that translates English
 skill / plugin / toolset / connector copy into Simplified Chinese, in place.
 
+更新记录：[CHANGELOG.md](CHANGELOG.md) · 最新版本：[Releases](https://github.com/yehaicheng258-arch/hermes-desktop-zh-ui/releases/latest)
+
 ---
 
 ## 安装（三条路，选一条）
