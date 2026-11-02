@@ -37,6 +37,14 @@ jobs:
                 echo "   syncing notes from $notes_file"
                 gh release edit "$tag" --notes-file "$notes_file"
               fi
+              if [ -f dist/plugin.js ]; then
+                if gh release view "$tag" --json assets --jq '.assets[].name' | grep -qx 'plugin.js'; then
+                  echo "   asset plugin.js already attached"
+                else
+                  echo "   uploading dist/plugin.js"
+                  gh release upload "$tag" "dist/plugin.js#plugin.js"
+                fi
+              fi
               continue
             fi
 
