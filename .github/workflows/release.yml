@@ -1,0 +1,45 @@
+name: release
+
+# 打 tag 就自动发版：给还没有 Release 的 v* tag 建一条 Release，并把 dist/plugin.js 挂成资产。
+# 手动也可以在 Actions 页点 “Run workflow”，用来补发历史 tag（比如 v1.0.0 那条空壳）。
+on:
+  push:
+    tags: ['v*']
+    branches: [main]      # main 上的推送用来「补齐」历史上漏发的 tag
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # 需要完整的 tag 历史
+
+      - name: Publish any tag without a release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          for tag in $(git tag --list 'v*' --sort=creatordate); do
+            if gh release view "$tag" >/dev/null 2>&1; then
+              echo "== $tag: release already exists, skip"
+              continue
+            fi
+            subject="$(git tag -l --format='%(contents:subject)' "$tag" | head -n1)"
+            [ -n "$subject" ] || subject="$tag"
+            echo "== $tag: creating release — $subject"
+            args=(--title "$subject" --generate-notes --verify-tag)
+            # 最新版本 = 语义版本最大的那个
+            if [ "$tag" = "$(git tag --list 'v*' --sort=-v:refname | head -n1)" ]; then
+              args+=(--latest)
+            fi
+            if [ -f dist/plugin.js ]; then
+              gh release create "$tag" "${args[@]}" "dist/plugin.js#plugin.js"
+            else
+              gh release create "$tag" "${args[@]}"
+            fi
+          done
